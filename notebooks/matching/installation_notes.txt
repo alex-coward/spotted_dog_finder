@@ -1,0 +1,51 @@
+1. Configuring Git
+https://learn.microsoft.com/en-us/windows/wsl/tutorials/wsl-git
+
+2. Installing miniconda
+https://docs.conda.io/projects/miniconda/en/latest/
+
+mkdir -p ~/miniconda3
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
+bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
+rm -rf ~/miniconda3/miniconda.sh
+
+
+conda create --name matching python=3.9
+conda activate matching
+
+3. Installing faiss
+# conda install -c pytorch -c nvidia faiss-gpu=1.7.4 mkl=2021 blas=1.0=mkl
+conda install -c conda-forge faiss-gpu
+
+4. Installing Jupyter
+conda install jupyter
+
+5. Docker
+
+5a. Docker - conda
+https://hub.docker.com/r/conda/miniconda3/
+
+docker pull conda/miniconda3
+docker run -i -t conda/miniconda3 /bin/bash
+
+5b. Using Dockerfile
+
+docker build -t faiss_docker -f Dockerfile .
+docker run --rm --name faiss_docker -ti faiss_docker
+
+6. Huggingface
+
+ conda install -c huggingface transformers
+ conda update tokenizers
+ conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia
+
+https://beenje.github.io/blog/posts/docker-and-conda/
+
+https://huggingface.co/docs/transformers/v4.19.2/en/model_doc/vit_mae
+
+
+
+
+
+
+

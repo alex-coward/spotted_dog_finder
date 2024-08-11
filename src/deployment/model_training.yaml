@@ -1,0 +1,26 @@
+# PIPELINE DEFINITION
+# Name: model-training-pipeline
+components:
+  comp-data-extraction:
+    executorLabel: exec-model-training
+deploymentSpec:
+  executors:
+    exec-model-training:
+      container:
+        args:
+        - cli.py
+        image: gcr.io/{GCP_PROJECT}/spotted-model-training:20231211220048
+pipelineInfo:
+  name: model-training-pipeline
+root:
+  dag:
+    tasks:
+      model-training:
+        cachingOptions:
+          enableCache: true
+        componentRef:
+          name: comp-model-training
+        taskInfo:
+          name: model-training
+schemaVersion: 2.1.0
+sdkVersion: kfp-2.4.0

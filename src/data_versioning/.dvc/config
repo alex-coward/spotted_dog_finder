@@ -1,0 +1,4 @@
+[core]
+    remote = dvc-data
+['remote "dvc-data"']
+    url = gs://spotted-images/individual/individual_dog_tfrecords/dvc_store

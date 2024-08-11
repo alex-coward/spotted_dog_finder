@@ -1,0 +1,2 @@
+In order to avoid loading data files to github, we prepared this structure to keep the buckets sorted out. 
+Interim data is in spotted-images bucket: https://console.cloud.google.com/storage/browser/spotted-images;tab=objects?forceOnBucketsSortingFiltering=true&project=spotted-399806&prefix=&forceOnObjectsSortingFiltering=false 

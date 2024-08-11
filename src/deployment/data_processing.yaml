@@ -1,0 +1,29 @@
+# PIPELINE DEFINITION
+# Name: data-processing-pipeline
+components:
+  comp-data-processing:
+    executorLabel: exec-data-processing
+deploymentSpec:
+  executors:
+    exec-data-processing:
+      container:
+        args:
+        - cli.py
+        - --cropped
+        - --uncropped
+        - --image_size
+        image: gcr.io/ac215-project/test-app-data-processing:20231206195811
+pipelineInfo:
+  name: data-processing-pipeline
+root:
+  dag:
+    tasks:
+      data-processing:
+        cachingOptions:
+          enableCache: true
+        componentRef:
+          name: comp-data-processing
+        taskInfo:
+          name: data-processing
+schemaVersion: 2.1.0
+sdkVersion: kfp-2.4.0

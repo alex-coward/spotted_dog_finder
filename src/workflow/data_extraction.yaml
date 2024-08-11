@@ -1,0 +1,27 @@
+# PIPELINE DEFINITION
+# Name: data-extraction-pipeline
+components:
+  comp-data-extraction:
+    executorLabel: exec-data-extraction
+deploymentSpec:
+  executors:
+    exec-data-extraction:
+      container:
+        args:
+        - cli.py
+        - --all
+        image: oll583921/spotted-data-extraction
+pipelineInfo:
+  name: data-extraction-pipeline
+root:
+  dag:
+    tasks:
+      data-extraction:
+        cachingOptions:
+          enableCache: true
+        componentRef:
+          name: comp-data-extraction
+        taskInfo:
+          name: data-extraction
+schemaVersion: 2.1.0
+sdkVersion: kfp-2.3.0

@@ -1,0 +1,26 @@
+# PIPELINE DEFINITION
+# Name: model-deployment-pipeline
+components:
+  comp-model-deployment:
+    executorLabel: exec-model-deployment
+deploymentSpec:
+  executors:
+    exec-model-deployment:
+      container:
+        args:
+        - cli.py
+        image: gcr.io/{GCP_PROJECT}/spotted-model-deployment:20231211223006
+pipelineInfo:
+  name: model-deployment-pipeline
+root:
+  dag:
+    tasks:
+      model-deployment:
+        cachingOptions:
+          enableCache: true
+        componentRef:
+          name: comp-model-deployment
+        taskInfo:
+          name: model-deployment
+schemaVersion: 2.1.0
+sdkVersion: kfp-2.4.0

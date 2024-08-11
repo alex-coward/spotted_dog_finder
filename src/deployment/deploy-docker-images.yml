@@ -1,0 +1,119 @@
+---
+- name: "Build docker images and push them to GCR"
+  hosts: localhost
+  gather_facts: false
+  tasks:
+  - name: "Get timestamp for docker tag"
+    shell: "(date +%Y%m%d%H%M%S)"
+    register: tag
+  - name: Print tag
+    debug:
+      var: tag
+  - name: Build frontend container image
+    community.general.docker_image:
+      build:
+        path: /frontend-react
+        platform: linux/amd64/v2
+      name: gcr.io/{{ gcp_project }}/spotted-app-frontend-react:{{ tag.stdout}}
+      source: build
+  - name: Push frontend image to GCR
+    community.general.docker_image:
+      name: gcr.io/{{ gcp_project }}/spotted-app-frontend-react:{{ tag.stdout}}
+      repository: gcr.io/{{ gcp_project }}/spotted-app-frontend-react:{{ tag.stdout}}
+      push: yes
+      source: local
+  - name: Build api-service container image
+    community.general.docker_image:
+      build:
+        path: /api-service
+        platform: linux/amd64/v2
+      name: gcr.io/{{ gcp_project }}/spotted-app-api-service:{{ tag.stdout}}
+      source: build
+  - name: Push api-service image to GCR
+    community.general.docker_image:
+      name: gcr.io/{{ gcp_project }}/spotted-app-api-service:{{ tag.stdout}}
+      repository: gcr.io/{{ gcp_project }}/spotted-app-api-service:{{ tag.stdout}}
+      push: yes
+      source: local
+  - name: Build data-extraction container image
+    community.general.docker_image:
+      build:
+        path: /data_extraction
+        platform: linux/amd64/v2
+      name: gcr.io/{{ gcp_project }}/spotted-data-extraction:{{ tag.stdout}}
+      source: build
+  - name: Push data-extraction image to GCR
+    community.general.docker_image:
+      name: gcr.io/{{ gcp_project }}/spotted-data-extraction:{{ tag.stdout}}
+      repository: gcr.io/{{ gcp_project }}/spotted-data-extraction:{{ tag.stdout}}
+      push: yes
+      source: local
+  - name: Build data-transformation container image
+    community.general.docker_image:
+      build:
+        path: /data_transformation
+        platform: linux/amd64/v2
+      name: gcr.io/{{ gcp_project }}/spotted-data-transformation:{{ tag.stdout}}
+      source: build
+  - name: Push data-transformation image to GCR
+    community.general.docker_image:
+      name: gcr.io/{{ gcp_project }}/spotted-data-transformation:{{ tag.stdout}}
+      repository: gcr.io/{{ gcp_project }}/spotted-data-transformation:{{ tag.stdout}}
+      push: yes
+      source: local
+  - name: Build data-preprocessing container image
+    community.general.docker_image:
+      build:
+        path: /data_preprocessing
+        platform: linux/amd64/v2
+      name: gcr.io/{{ gcp_project }}/spotted-data-preprocessing:{{ tag.stdout}}
+      source: build
+  - name: Push data-preprocessing image to GCR
+    community.general.docker_image:
+      name: gcr.io/{{ gcp_project }}/spotted-data-preprocessing:{{ tag.stdout}}
+      repository: gcr.io/{{ gcp_project }}/spotted-data-preprocessing:{{ tag.stdout}}
+      push: yes
+      source: local
+  - name: Build data-processing container image
+    community.general.docker_image:
+      build:
+        path: /data_processing
+        platform: linux/amd64/v2
+      name: gcr.io/{{ gcp_project }}/spotted-data-processing:{{ tag.stdout}}
+      source: build
+  - name: Push data-preprocessing image to GCR
+    community.general.docker_image:
+      name: gcr.io/{{ gcp_project }}/spotted-data-processing:{{ tag.stdout}}
+      repository: gcr.io/{{ gcp_project }}/spotted-data-processing:{{ tag.stdout}}
+      push: yes
+      source: local
+  - name: Build model-training container image
+    community.general.docker_image:
+      build:
+        path: /model_training
+        platform: linux/amd64/v2
+      name: gcr.io/{{ gcp_project }}/spotted-model-training:{{ tag.stdout}}
+      source: build
+  - name: Push model-training image to GCR
+    community.general.docker_image:
+      name: gcr.io/{{ gcp_project }}/spotted-model-training:{{ tag.stdout}}
+      repository: gcr.io/{{ gcp_project }}/spotted-model-training:{{ tag.stdout}}
+      push: yes
+      source: local
+  - name: Build model-deployment container image
+    community.general.docker_image:
+      build:
+        path: /model-deployment
+        platform: linux/amd64/v2
+      name: gcr.io/{{ gcp_project }}/spotted-model-deployment:{{ tag.stdout}}
+      source: build
+  - name: Push model-deployment image to GCR
+    community.general.docker_image:
+      name: gcr.io/{{ gcp_project }}/spotted-model-deployment:{{ tag.stdout}}
+      repository: gcr.io/{{ gcp_project }}/spotted-model-deployment:{{ tag.stdout}}
+      push: yes
+      source: local
+  - name: "Save docker tag"
+    shell: echo {{ tag.stdout}} > .docker-tag
+  - name: "Remove all unused containers"
+    shell: docker system prune -a

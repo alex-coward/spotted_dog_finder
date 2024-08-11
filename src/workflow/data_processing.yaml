@@ -1,0 +1,30 @@
+# PIPELINE DEFINITION
+# Name: data-processing-pipeline
+components:
+  comp-data-processing:
+    executorLabel: exec-data-processing
+deploymentSpec:
+  executors:
+    exec-data-processing:
+      container:
+        args:
+        - cli.py
+        - --image_size {args.image_size}
+        - --cropped
+        image: oll583921/spotted-data-processing
+        resources:
+          cpuLimit: 32.0
+pipelineInfo:
+  name: data-processing-pipeline
+root:
+  dag:
+    tasks:
+      data-processing:
+        cachingOptions:
+          enableCache: true
+        componentRef:
+          name: comp-data-processing
+        taskInfo:
+          name: data-processing
+schemaVersion: 2.1.0
+sdkVersion: kfp-2.3.0

@@ -1,0 +1,31 @@
+# PIPELINE DEFINITION
+# Name: data-preprocessing-pipeline
+components:
+  comp-data-preprocessing:
+    executorLabel: exec-data-preprocessing
+deploymentSpec:
+  executors:
+    exec-data-preprocessing:
+      container:
+        args:
+        - cli.py
+        - --image_size {args.image_size}
+        - --cropped
+        image: oll583921/spotted-data-preprocessing
+
+        resources:
+          cpuLimit: 32.0
+pipelineInfo:
+  name: data-preprocessing-pipeline
+root:
+  dag:
+    tasks:
+      data-preprocessing:
+        cachingOptions:
+          enableCache: true
+        componentRef:
+          name: comp-data-preprocessing
+        taskInfo:
+          name: data-preprocessing
+schemaVersion: 2.1.0
+sdkVersion: kfp-2.3.0

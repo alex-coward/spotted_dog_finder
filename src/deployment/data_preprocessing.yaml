@@ -1,0 +1,29 @@
+# PIPELINE DEFINITION
+# Name: data-preprocessing-pipeline
+components:
+  comp-data-preprocessing:
+    executorLabel: exec-data-preprocessing
+deploymentSpec:
+  executors:
+    exec-data-preprocessing:
+      container:
+        args:
+        - cli.py
+        - --cropped
+        - --uncropped
+        - --image_size
+        image: gcr.io/{GCP_PROJECT}/spotted-data-preprocessing:20231206192245
+pipelineInfo:
+  name: data-preprocessing-pipeline
+root:
+  dag:
+    tasks:
+      data-preprocessing:
+        cachingOptions:
+          enableCache: true
+        componentRef:
+          name: comp-data-preprocessing
+        taskInfo:
+          name: data-preprocessing
+schemaVersion: 2.1.0
+sdkVersion: kfp-2.4.0

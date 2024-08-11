@@ -1,0 +1,26 @@
+# PIPELINE DEFINITION
+# Name: data-transformation-pipeline
+components:
+  comp-data-transformation:
+    executorLabel: exec-data-transformation
+deploymentSpec:
+  executors:
+    exec-data-transformation:
+      container:
+        args:
+        - cli.py
+        image: gcr.io/{GCP_PROJECT}/spotted-data-transformation:20231206192245
+pipelineInfo:
+  name: data-transformation-pipeline
+root:
+  dag:
+    tasks:
+      data-transformation:
+        cachingOptions:
+          enableCache: true
+        componentRef:
+          name: comp-data-transformation
+        taskInfo:
+          name: data-transformation
+schemaVersion: 2.1.0
+sdkVersion: kfp-2.4.0
